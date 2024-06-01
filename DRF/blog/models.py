@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
+from .managers import PostManager
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -13,9 +13,11 @@ class Post(models.Model):
     # tip: by implimenting this in the code if you want to query any data in the model it
     # will show you the data with published status in it
     class PostObjects(models.Manager):
-        def get_queryset(self) -> models.QuerySet:
+        def get_queryset(self):
             return super().get_queryset().filter(status="published")
-        
+    
+    objects = PostManager()
+       
     options = (
         ('draft', 'Draft'),
         ('published', 'Published')
